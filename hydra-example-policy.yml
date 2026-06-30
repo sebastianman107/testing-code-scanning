@@ -1,0 +1,24 @@
+---
+k8sNamespace: example-namespace
+apps:
+  - name: example-api
+    hydraAuthorizedRoutes:
+      - operations:
+          - methods:
+              - GET
+              - POST
+              - PUT
+            paths:
+              - /foo/bar
+        allowedPrincipals:
+          - client-api1
+          - another-svc1
+    bypassHydraRoutes:
+      - operations:
+          - methods:
+              - GET
+            paths:
+              - /foo/*
+      - operations:
+          - methods:
+              - "*"
