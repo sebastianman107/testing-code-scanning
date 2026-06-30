@@ -40,9 +40,9 @@ jobs:
         id: conftest
         if: steps.changed-files-yaml.outputs.any_changed == 'true'
         shell: bash
-        run: conftest test --output sarif ${{ steps.changed-files-yaml.outputs.all_changed_files }} > results.sarif
-             EXIT_CODE=$?
-             cat results.sarif
+        run: conftest test --output sarif ${{ steps.changed-files-yaml.outputs.all_changed_files }} > results.sarif;
+             EXIT_CODE=$?;
+             cat results.sarif;
              exit $EXIT_CODE
         continue-on-error: true
 
