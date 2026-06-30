@@ -56,6 +56,9 @@ jobs:
         with:
           sarif_file: results.sarif
 
+      - name: Debug outcome
+        run: echo "Conftest outcome was ${{ steps.conftest.outcome }}"
+
       - name: Fail if Conftest found violations
         if: steps.conftest.outcome == 'failure'
         run: exit 1
