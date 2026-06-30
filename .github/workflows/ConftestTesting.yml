@@ -41,7 +41,6 @@ jobs:
         if: steps.changed-files-yaml.outputs.any_changed == 'true'
         shell: bash
         run: conftest test --output sarif ${{ steps.changed-files-yaml.outputs.all_changed_files }} > results.sarif
-             cat results.sarif
         continue-on-error: true
 
       - name: Filter SARIF
