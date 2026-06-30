@@ -37,11 +37,17 @@ jobs:
             .github/**
 
       - name: Run Conftest
+        id: conftest
         if: steps.changed-files-yaml.outputs.any_changed == 'true'
         run: conftest test --quiet --output sarif ${{ steps.changed-files-yaml.outputs.all_changed_files }} | tee results.sarif
-     
+        continue-on-error: true
+
       - name: Upload Testconf scan SARIF report
-        if: steps.changed-files-yaml.outputs.any_changed == 'true' && hashFiles('results.sarif') != ''
+        if: steps.conftest.outcome == 'failure'
         uses: github/codeql-action/upload-sarif@8aad20d150bbac5944a9f9d289da16a4b0d87c1e # v4.36.2
         with:
           sarif_file: results.sarif
+
+      - name: Fail if Conftest found violations
+        if: steps.conftest.outcome == 'failure'
+        run: exit 1
