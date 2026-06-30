@@ -39,6 +39,7 @@ jobs:
       - name: Run Conftest
         id: conftest
         if: steps.changed-files-yaml.outputs.any_changed == 'true'
+        shell: bash
         run: conftest test --output sarif ${{ steps.changed-files-yaml.outputs.all_changed_files }} | tee results.sarif
              exit ${[PIPESTATUS[0]}
         continue-on-error: true
