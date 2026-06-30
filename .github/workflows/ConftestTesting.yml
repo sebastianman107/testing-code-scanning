@@ -46,7 +46,7 @@ jobs:
         if: steps.changed-files-yaml.outputs.any_changed == 'true'
         uses: advanced-security/filter-sarif@2da736ff05ef065cb2894ac6892e47b5eac2c3c0 # v1.1
         with:
-          severity: HIGH
+          severity: error
           input: results.sarif
           output: results.sarif
 
