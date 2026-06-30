@@ -39,7 +39,7 @@ jobs:
       - name: Run Conftest
         id: conftest
         if: steps.changed-files-yaml.outputs.any_changed == 'true'
-        run: conftest test --quiet --output sarif ${{ steps.changed-files-yaml.outputs.all_changed_files }} | tee results.sarif
+        run: conftest test --output sarif ${{ steps.changed-files-yaml.outputs.all_changed_files }} | tee results.sarif
         continue-on-error: true
 
       - name: Filter SARIF
