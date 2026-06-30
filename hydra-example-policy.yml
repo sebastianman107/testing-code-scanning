@@ -18,7 +18,7 @@ apps:
           - methods:
               - GET
             paths:
-              - /foo
+              - /foo/
       - operations:
           - methods:
               - "*"
