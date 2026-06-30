@@ -38,7 +38,7 @@ jobs:
 
       - name: Run Conftest
         if: steps.changed-files-yaml.outputs.any_changed == 'true'
-        run: conftest test --output sarif ${{ steps.changed-files-yaml.outputs.all_changed_files }} | tee results.sarif
+        run: conftest test --quiet --output sarif ${{ steps.changed-files-yaml.outputs.all_changed_files }} | tee results.sarif
      
       - name: Upload Testconf scan SARIF report
         if: always() && steps.changed-files-yaml.outputs.any_changed == 'true'
