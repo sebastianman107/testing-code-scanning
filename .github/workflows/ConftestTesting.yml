@@ -28,7 +28,7 @@ jobs:
 
       - name: Run Conftest
         id: conftest
-        run: conftest test --ignore=".github" --output sarif ${{ steps.changed-files-yaml.outputs.all_changed_files }} | tee results.sarif
+        run: conftest test . --ignore=".github" --output sarif | tee results.sarif
         continue-on-error: true
 
       - name: Filter SARIF
