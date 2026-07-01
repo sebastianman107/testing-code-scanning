@@ -25,26 +25,14 @@ jobs:
           echo "e8144c6d6d2ae0260b869caa60c7c262a1f95ac63ec1e5d2fb19be452d606347  conftest.tar.gz" | sha256sum -c
           tar xzf conftest.tar.gz
           sudo mv conftest /usr/local/bin/
-     
-      - name: Get changed yaml files
-        id: changed-files-yaml
-        uses: tj-actions/changed-files@24d32ffd492484c1d75e0c0b894501ddb9d30d62 # v47.0.0
-        with:
-          files: |
-            **/*.yml
-            **/*.yaml
-          files_ignore: |
-            .github/**
 
       - name: Run Conftest
         id: conftest
-        if: steps.changed-files-yaml.outputs.any_changed == 'true'
-        shell: bash
-        run: conftest test --output sarif ${{ steps.changed-files-yaml.outputs.all_changed_files }} | tee results.sarif
+        run: conftest test --ignore=".github" --output sarif ${{ steps.changed-files-yaml.outputs.all_changed_files }} | tee results.sarif
         continue-on-error: true
 
       - name: Filter SARIF
-        if: steps.changed-files-yaml.outputs.any_changed == 'true'
+        if: hashFiles('results.sarif') != ''
         uses: advanced-security/filter-sarif@2da736ff05ef065cb2894ac6892e47b5eac2c3c0 # v1.1
         with:
           severity: error
@@ -52,8 +40,6 @@ jobs:
           output: results.sarif
 
       - name: Upload Conftest scan SARIF report
-        if: steps.changed-files-yaml.outputs.any_changed == 'true'
         uses: github/codeql-action/upload-sarif@8aad20d150bbac5944a9f9d289da16a4b0d87c1e # v4.36.2
         with:
           sarif_file: results.sarif
-
