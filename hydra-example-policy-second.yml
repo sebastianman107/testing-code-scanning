@@ -18,7 +18,7 @@ apps:
           - methods:
               - GET
             paths:
-              - /thisistest/
+              - /thisistest/*
       - operations:
           - methods:
               - "*"
