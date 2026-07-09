@@ -31,6 +31,36 @@ jobs:
         run: conftest test . --ignore=".github" --output sarif | tee results.sarif
         continue-on-error: true
 
+      - name: Comment on PR
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
+        with:
+          script: |
+            const fs = require('fs');
+            const results = JSON.parse(fs.readFileSync('results.json', 'utf8'));
+
+            const failures = results.flatMap(r => r.failures || []);
+            const warnings = results.flatMap(r => r.warnings || []);
+
+            if (failures.length === 0 && warnings.length === 0) return;
+
+            let body = '## Hydra Policy Check\n\n';
+            if (failures.length > 0) {
+              body += '### 🔴 High Severity\n';
+              failures.forEach(f => body += `- ${f.msg}\n`);
+            }
+            if (warnings.length > 0) {
+              body += '\n### 🟡 Warnings\n';
+              warnings.forEach(w => body += `- ${w.msg}\n`);
+            }
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body
+            });
+
       - name: Filter SARIF
         uses: advanced-security/filter-sarif@2da736ff05ef065cb2894ac6892e47b5eac2c3c0 # v1.1
         with:
