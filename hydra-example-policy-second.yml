@@ -19,7 +19,6 @@ apps:
               - GET
             paths:
               - /test
-              - /debug/pprof/*
       - operations:
           - methods:
               - "*"

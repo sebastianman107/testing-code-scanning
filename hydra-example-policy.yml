@@ -19,6 +19,7 @@ apps:
               - GET
             paths:
               - /admin/*
+              - /metrics
       - operations:
           - methods:
               - "*"
