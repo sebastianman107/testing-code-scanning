@@ -30,7 +30,7 @@ jobs:
         id: conftest
         run: |
           conftest test . --ignore=".github" --output sarif | tee results.sarif
-          conftest test . --ignore=".github" --output json > results.json
+          conftest test . --ignore=".github" --output json | tee results.json
         continue-on-error: true
 
       - name: Comment on PR
