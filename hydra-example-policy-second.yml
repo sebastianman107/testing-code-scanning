@@ -19,7 +19,7 @@ apps:
               - GET
             paths:
               - /test
-              - /debug/pprof/*
+              - /legit
       - operations:
           - methods:
               - "*"
