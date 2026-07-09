@@ -28,7 +28,9 @@ jobs:
 
       - name: Run Conftest
         id: conftest
-        run: conftest test . --ignore=".github" --output sarif | tee results.sarif
+        run: |
+          conftest test . --ignore=".github" --output sarif | tee results.sarif
+          conftest test . --ignore=".github" --output json > results.json
         continue-on-error: true
 
       - name: Comment on PR
