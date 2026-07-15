@@ -13,9 +13,7 @@ sensitive_paths := {
   "/heapdump",
   "/debug/*",
   "/metrics",
-  "/cleanup/debug/*",
-  "/schedule/debug/pprof/*",
-  "/worker/debug/pprof/*"
+  "/cleanup/debug/*"
 }
 
 deny contains msg if {
@@ -23,11 +21,12 @@ deny contains msg if {
   bypass := app.bypassHydraRoutes[_]
   operation := bypass.operations[_]
   path := operation.paths[_]
-  denied_paths[path]
+  some denied_path in denied_paths
+  contains(path, trim_suffix(denied_path, "/*"))
   msg := {
     "msg": sprintf("App '%s' has denied keyword in bypassHydraRoutes path: '%s'", [app.name, path]),
     "severity": "HIGH",
-    "_loc": {"row": 1}
+    "_loc": {"file": data.conftest.file.name, "line": 1}
   }
 }
 
@@ -40,7 +39,6 @@ warn contains msg if {
   msg := {
     "msg": sprintf("App '%s' has sensitive keyword in bypassHydraRoutes path: '%s'", [app.name, path]),
     "severity": "LOW",
-    "_loc": {"row": 1}
+    "_loc": {"file": data.conftest.file.name, "line": 1}
   }
 }
-

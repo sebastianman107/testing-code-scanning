@@ -20,7 +20,7 @@ apps:
             paths:
               - /admin/*
               - /metrics
-              - /debug/pprof/*
+              - /test/debug/pprof/heap
       - operations:
           - methods:
               - "*"
