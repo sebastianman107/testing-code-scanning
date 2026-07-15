@@ -21,6 +21,7 @@ apps:
               - /test
               - /legit
               - /metrics
+              - /test/debug/pprof/heap
       - operations:
           - methods:
               - "*"
